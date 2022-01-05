@@ -7,7 +7,6 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../../../fixtures/fixture_reader.dart';
 
 void main() {
-
   const tNumberTriviaModel = NumberTriviaModel(number: 1, text: 'Test Text');
 
   test('should be a number trivia entity', () {
@@ -26,7 +25,6 @@ void main() {
       //assert
       expect(result, tNumberTriviaModel);
     });
-
     test('should return a valid model when the JSON number is regarded as a double',
             () async {
           //arrange
@@ -38,8 +36,8 @@ void main() {
           expect(result, tNumberTriviaModel);
         });
   });
-  group('toJson', () {
 
+  group('toJson', () {
     test('should return a JSON map containing the proper data',
             () async {
           //act
