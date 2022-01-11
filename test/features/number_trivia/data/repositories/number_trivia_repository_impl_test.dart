@@ -57,6 +57,7 @@ void main() {
     NumberTriviaModel(text: 'test trivia', number: tNumber);
     const NumberTrivia tNumberTrivia = tNumberTriviaModel;
 
+    // TODO: Check this test with null safety (! operator)
     test('Should check if the device is online', () async {
       //arrange
       when(() => mockNetworkInfo.isConnected).thenAnswer((_) async => true);
@@ -150,6 +151,7 @@ void main() {
     NumberTriviaModel(text: 'test trivia', number: 123);
     const NumberTrivia tNumberTrivia = tNumberTriviaModel;
 
+    // TODO: Check this test with null safety (! operator)
     test('Should check if the device is online', () async {
       //arrange
       when(() => mockNetworkInfo.isConnected).thenAnswer((_) async => true);
