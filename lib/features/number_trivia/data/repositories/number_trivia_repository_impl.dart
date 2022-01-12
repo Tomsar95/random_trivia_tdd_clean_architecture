@@ -10,21 +10,22 @@ import 'package:dartz/dartz.dart';
 
 typedef _ConcreteOrRandomChooser = Future<NumberTriviaModel> Function();
 
-class NumberTriviaRepositoryImplementation implements NumberTriviaRepository {
+class NumberTriviaRepositoryImpl implements NumberTriviaRepository {
   final NumberTriviaRemoteDataSource remoteDataSource;
   final NumberTriviaLocalDataSource localDataSource;
   final NetworkInfo networkInfo;
 
-  NumberTriviaRepositoryImplementation(
-      {required this.remoteDataSource,
-      required this.localDataSource,
-      required this.networkInfo});
+  NumberTriviaRepositoryImpl({
+    required this.remoteDataSource,
+    required this.localDataSource,
+    required this.networkInfo,
+  });
 
   @override
   Future<Either<Failure, NumberTrivia>> getConcreteNumberTrivia(
       int number) async {
     return await _getTrivia(() {
-      return remoteDataSource.getConcreteNumberTrivia(number);
+      return remoteDataSource.getConcreteNumberTrivia(number)!;
     });
   }
 
@@ -37,7 +38,7 @@ class NumberTriviaRepositoryImplementation implements NumberTriviaRepository {
 
   Future<Either<Failure, NumberTrivia>> _getTrivia(
       _ConcreteOrRandomChooser getConcreteOrRandom) async {
-    if (await networkInfo.isConnected ?? false) {
+    if (await networkInfo.isConnected) {
       try {
         final remoteTrivia = await getConcreteOrRandom();
         localDataSource.cacheNumberTrivia(remoteTrivia);
@@ -48,7 +49,7 @@ class NumberTriviaRepositoryImplementation implements NumberTriviaRepository {
     } else {
       try {
         final localTrivia = await localDataSource.getLastNumberTrivia();
-        return Right(localTrivia);
+        return Right(localTrivia!);
       } on CacheException {
         return Left(CacheFailure());
       }
