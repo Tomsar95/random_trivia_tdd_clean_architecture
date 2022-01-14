@@ -7,6 +7,7 @@ import 'package:clean_architecture_tdd_course/features/core/util/input_converter
 import 'package:clean_architecture_tdd_course/features/number_trivia/domain/entities/number_trivia.dart';
 import 'package:clean_architecture_tdd_course/features/number_trivia/domain/usecases/get_concrete_number_trivia.dart';
 import 'package:clean_architecture_tdd_course/features/number_trivia/domain/usecases/get_random_number_trivia.dart';
+import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
 part 'number_trivia_event.dart';
@@ -30,13 +31,13 @@ class NumberTriviaBloc extends Bloc<NumberTriviaEvent, NumberTriviaState> {
   }) : super(Empty()) {
     on<GetTriviaForConcreteNumber>((event, emit) async {
       final inputEither =
-          inputConverter.stringToUnsignedInteger(event.numberString);
-      inputEither!.fold((failure) {
+      inputConverter.stringToUnsignedInteger(event.numberString);
+      await inputEither!.fold((failure) {
         emit(const Error(message: invalidInputMessage));
       }, (integer) async {
         emit(Loading());
         final failureOrTrivia =
-            await getConcreteNumberTrivia(Params(number: integer));
+        await getConcreteNumberTrivia(Params(number: integer));
         failureOrTrivia.fold((failure) {
           emit(Error(message: _mapFailureToMessage(failure)));
         }, (trivia) {
